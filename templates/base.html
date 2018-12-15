@@ -53,15 +53,21 @@
         <div class="col-lg-3">
           <h1 class="my-4">Tareas</h1>
           <div class="list-group">
-            <a href="#" class="list-group-item active">Spark</a>
-            <a href="#" class="list-group-item">Pandas</a>
+            {% for guia in guias %}
+              {% if guia_actual == guia %}
+                <a href="#" class="list-group-item active">{{guia}}</a>
+              {% else %}
+                <a href="#" class="list-group-item">{{guia}}</a>
+              {% endif %}
+            {% endfor %}
           </div>
         </div>
         <!-- /.col-lg-3 -->
 
         <div class="col-lg-9">
-
-        {% block content %}{% endblock %}
+            {% block content %}{% endblock %}
+        </div>
+        <!-- /.col-lg-9 -->
       </div>
 
     </div>

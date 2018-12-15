@@ -18,3 +18,8 @@ class Corrector:
 
     def nombres_guias(self):
         return [guia["titulo"] for guia in self.guias]
+
+    def enunciados_de(self, titulo):
+        for guia in self.guias:
+            if guia["titulo"] == titulo:
+                return [ej["enunciado"] for ej in guia["ejercicios"]]
