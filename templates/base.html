@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Shop Item - Start Bootstrap Template</title>
+    <title>{% block title %}{% endblock %} - Organización de Datos</title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
@@ -61,60 +61,7 @@
 
         <div class="col-lg-9">
 
-          <div class="card mt-4">
-            <div class="card-body">
-              <h3 class="card-title">Ejercicio 1</h3>
-              <p class="card-text">
-                Dado un RDD con columnas (c1,c2,c3), obtener el registro
-                con mayor valor de c3.
-              </p>
-              <textarea cols="50" rows="10"></textarea><br/>
-              <a href="#" class="btn btn-success">Enviar solución</a>
-            </div>
-          </div>
-          <!-- /.card -->
-
-          <div class="card mt-4">
-            <div class="card-body">
-              <h3 class="card-title">Ejercicio 2</h3>
-              <p class="card-text">
-                Dado un RDD con columnas (c1,c2,c3), obtener el registro
-                con mayor valor de c3.
-              </p>
-              <textarea cols="50" rows="10"></textarea><br/>
-              <a href="#" class="btn btn-success">Enviar solución</a>
-            </div>
-          </div>
-          <!-- /.card -->
-
-          <div class="card mt-4">
-            <div class="card-body">
-              <h3 class="card-title">Ejercicio 3</h3>
-              <p class="card-text">
-                Dado un RDD con columnas (c1,c2,c3), obtener el registro
-                con mayor valor de c3.
-              </p>
-              <textarea cols="50" rows="10"></textarea><br/>
-              <a href="#" class="btn btn-success">Enviar solución</a>
-            </div>
-          </div>
-          <!-- /.card -->
-
-          <div class="card mt-4">
-            <div class="card-body">
-              <h3 class="card-title">Ejercicio 4</h3>
-              <p class="card-text">
-                Dado un RDD con columnas (c1,c2,c3), obtener el registro
-                con mayor valor de c3.
-              </p>
-              <textarea cols="50" rows="10"></textarea><br/>
-              <a href="#" class="btn btn-success">Enviar solución</a>
-            </div>
-          </div>
-          <!-- /.card -->
-        </div>
-        <!-- /.col-lg-9 -->
-
+        {% block content %}{% endblock %}
       </div>
 
     </div>
