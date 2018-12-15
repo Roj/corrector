@@ -25,7 +25,7 @@ class Worker(ABC):
         return True
 
     @staticmethod
-    def correr_como_modulo(codigo, modulo = None):
+    def cargar_como_modulo(codigo, modulo = None):
         """Escribe el código a un archivo y lo importa para poder utilizarlo.
         Como funciona de módulo, el namespace es reservado y no puede acceder
         a nuestras variables."""

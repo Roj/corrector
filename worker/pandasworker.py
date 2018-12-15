@@ -19,7 +19,7 @@ class PandasWorker(Worker):
                 })
                 continue
             # Correr el código del alumno.
-            modulo = Worker.correr_como_modulo(codigo, modulo)
+            modulo = Worker.cargar_como_modulo(codigo, modulo)
             re_importar = True
             datos = pd.read_csv(ejercicio["archivo_datos"])
             try:
