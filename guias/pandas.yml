@@ -1,0 +1,14 @@
+titulo: Pandas
+ejercicios:
+  -
+    enunciado: >-
+      Dado un dataframe de tres columnas elegir la fila que tiene mayor suma.
+      La salida deberá ser la suma máxima.
+    salida_esperada: archivo.json
+  -
+    enunciado: >-
+      Dado un dataframe de cuatro columnas elegir la fila que tiene mayor suma.
+      La salida deberá ser la suma máxima.
+    salida_esperada: archivo2.json
+
+
