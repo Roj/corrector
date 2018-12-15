@@ -13,7 +13,6 @@ class Corrector:
             if archivo[-4:] != ".yml":
                 continue
             with open("guias/" + archivo) as f:
-                print("Cargando "+archivo)
                 guia = yaml.load(f)
                 self.guias.append(guia)
 
