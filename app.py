@@ -6,7 +6,13 @@ corrector = Corrector()
 
 @app.route("/")
 def home():
+    return render_template("home.html",
+        guias = corrector.nombres_guias())
+
+@app.route("/guia/<titulo>")
+def mostrar_guia(titulo):
+    assert titulo in corrector.nombres_guias()
     return render_template("guia.html",
         guias = corrector.nombres_guias(),
-        guia_actual = "Pandas",
-        enunciados = corrector.enunciados_de("Pandas"))
+        guia_actual = titulo,
+        enunciados = corrector.enunciados_de(titulo))
