@@ -22,12 +22,12 @@ class PandasWorker(Worker):
             codigo = self.preparar_codigo(codigo)
             modulo = Worker.cargar_como_modulo(codigo, modulo)
             re_importar = True
-            datos = pd.read_csv(ejercicio["archivo_datos"])
+            datos = pd.read_csv("datos/"+ejercicio["archivo_datos"])
             try:
                 output = modulo.programa(pd, datos)
                 self.resultados.append({
                     "error": "",
-                    "output": output
+                    "output": output.to_json()
                 })
             except Exception as e:
                 self.resultados.append({

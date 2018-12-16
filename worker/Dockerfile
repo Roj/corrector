@@ -1,4 +1,5 @@
 FROM python:3.6
+# Note - the dockerfile must be run from the root repository directory!
 # Install java.
 RUN \
   apt-get update && \
@@ -9,13 +10,10 @@ WORKDIR /worker
 # At first, we only add the necessary files to install the python
 # packages. This allows docker to cache the image and not download
 # them every time.
-ADD requirements.txt /worker
+ADD worker/requirements.txt /worker
 RUN pip3 install --trusted-host pypi.python.org -r requirements.txt
 
-# Copy our current directory.
-ADD . /worker
-
-RUN python3 --version
-RUN ls /worker
+# Copy the worker directory.
+ADD worker/ /worker
+ADD guias/entradas/ /worker/datos
 ENTRYPOINT ["/worker/entry.py"]
-#CMD ["bash"]
