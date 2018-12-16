@@ -10,9 +10,12 @@ WORKDIR /worker
 # packages. This allows docker to cache the image and not download
 # them every time.
 ADD requirements.txt /worker
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
+RUN pip3 install --trusted-host pypi.python.org -r requirements.txt
 
 # Copy our current directory.
 ADD . /worker
 
-cmd ["bash"]
+RUN python3 --version
+RUN ls /worker
+ENTRYPOINT ["/worker/entry.py"]
+#CMD ["bash"]
