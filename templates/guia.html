@@ -3,16 +3,41 @@
 {{guia_actual}}
 {% endblock %}
 {% block content %}
-  {% for i in range(enunciados|length) %}
-  <div class="card mt-4">
-    <div class="card-body">
-      <h3 class="card-title">Ejercicio {{i+1}}</h3>
-      <p class="card-text">
-        {{enunciados[i]}}
-      </p>
-      <textarea cols="50" rows="10"></textarea><br/>
-      <a href="#" class="btn btn-success">Enviar solución</a>
+  <form action="#" id="form_guia" onsubmit="enviarDatos(event)">
+    {% for i in range(enunciados|length) %}
+    <div class="card mt-4">
+      <div class="card-body">
+        <h3 class="card-title">Ejercicio {{i+1}}</h3>
+        <p class="card-text">
+          {{enunciados[i]}}
+        </p>
+        <textarea cols="50" rows="10" form="form_guia" name="codigo{{i}}">
+        </textarea><br/>
+      </div>
     </div>
-  </div>
-  {% endfor %}
+    {% endfor %}
+    <input type="submit"
+      class="btn btn-success" value="Enviar"/>
+  </form>
+{% endblock %}
+{% block scripts %}
+  <script language="javascript">
+    function enviarDatos(event) {
+      event.preventDefault();
+      console.log("Funcion llamada!");
+      codigos = [];
+      for(i = 0; i < $("textarea").length; i++) {
+        codigos.push($('[name="codigo'+i+'"]')[0].value);
+      }
+      $.ajax({
+        url: "/guia/{{guia_actual}}/entregar",
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify(codigos),
+        success: console.log,
+        error: console.log
+      })
+    }
+  </script>
 {% endblock %}

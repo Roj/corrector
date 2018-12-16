@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from corrector import Corrector
 app = Flask(__name__)
 
@@ -16,3 +16,13 @@ def mostrar_guia(titulo):
         guias = corrector.nombres_guias(),
         guia_actual = titulo,
         enunciados = corrector.enunciados_de(titulo))
+
+@app.route("/guia/<titulo>/entregar", methods=["POST"])
+def entregar_guia(titulo):
+    """Recibe una lista de códigos de la guía como JSON."""
+    assert titulo in corrector.nombres_guias()
+    assert request.is_json
+    codigos = request.get_json()
+    trabajo = corrector.preparar_trabajo(codigos, titulo)
+
+    return json.dumps(corrector.correr_trabajo(trabajo, titulo)), 200

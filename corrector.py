@@ -20,10 +20,24 @@ class Corrector:
     def nombres_guias(self):
         return [guia["titulo"] for guia in self.guias]
 
-    def enunciados_de(self, titulo):
+    def _obtener_prop_guias(self, titulo, prop):
         for guia in self.guias:
             if guia["titulo"] == titulo:
-                return [ej["enunciado"] for ej in guia["ejercicios"]]
+                return [ej[prop] for ej in guia["ejercicios"]]
+
+    def enunciados_de(self, titulo):
+        return self._obtener_prop_guias(titulo, "enunciado")
+
+    def preparar_trabajo(self, codigos, nombre_guia):
+        archivos = self._obtener_prop_guias(nombre_guia, "archivo_entrada")
+        assert len(codigos) == len(archivos)
+        trabajo = []
+        for i in range(len(codigos)):
+            trabajo.append({
+                "archivo_datos": archivos[i],
+                "codigo": codigos[i]
+                })
+        return trabajo
 
     def correr_trabajo(self, trabajo, tipo):
         """Corre una instancia de docker pasando `trabajo` como json.
