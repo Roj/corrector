@@ -10,7 +10,7 @@ class PandasWorker(Worker):
     def correr(self):
         self.resultados = []
         modulo = None
-        for ejercicio in ejercicios:
+        for ejercicio in self.ejercicios:
             codigo = ejercicio["codigo"]
             if not Worker.codigo_es_seguro(codigo):
                 self.resultados.append({
@@ -19,6 +19,7 @@ class PandasWorker(Worker):
                 })
                 continue
             # Correr el código del alumno.
+            codigo = self.preparar_codigo(codigo)
             modulo = Worker.cargar_como_modulo(codigo, modulo)
             re_importar = True
             datos = pd.read_csv(ejercicio["archivo_datos"])
@@ -28,9 +29,9 @@ class PandasWorker(Worker):
                     "error": "",
                     "output": output
                 })
-            except:
+            except Exception as e:
                 self.resultados.append({
-                    "error": "Error en el código",
+                    "error": "Error en el código: " + str(e),
                     "output": ""
                 })
 
