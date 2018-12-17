@@ -11,8 +11,9 @@
         <p class="card-text">
           {{enunciados[i]}}
         </p>
-        <textarea cols="50" rows="10" form="form_guia" name="codigo{{i}}">
-        </textarea><br/>
+        <pre class="topborder"><code class="python" onclick="$('#ej{{i}}code')[0].focus()">def ejercicio{{i+1}}(pd, datos):</code></pre>
+        <pre><code class="python indented editor" contenteditable id="ej{{i}}code">//tu código va acá</code></pre>
+        <pre><code class="python indented" onclick="$('#ej{{i}}code')[0].focus()">return datos</code></pre>
       </div>
     </div>
     {% endfor %}
@@ -21,13 +22,23 @@
   </form>
 {% endblock %}
 {% block scripts %}
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
   <script language="javascript">
+    hljs.initHighlightingOnLoad();
+    $(document).on("focusout", "pre code.editor", function(event){
+      editors = $("pre code.editor");
+      for(i = 0; i < editors.length; i++)
+        hljs.highlightBlock(editors[i]);
+    });
     function enviarDatos(event) {
       event.preventDefault();
       console.log("Funcion llamada!");
       codigos = [];
-      for(i = 0; i < $("textarea").length; i++) {
-        codigos.push($('[name="codigo'+i+'"]')[0].value);
+      for(i = 0; i < $("pre code.editor").length; i++) {
+        codigos.push($("#ej"+i+"code")[0].innerText);
+        console.log($("#ej"+i+"code")[0].innerText);
       }
       $.ajax({
         url: "/guia/{{guia_actual}}/entregar",

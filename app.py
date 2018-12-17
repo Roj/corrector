@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from corrector import Corrector
+import json
 app = Flask(__name__)
 
 corrector = Corrector()

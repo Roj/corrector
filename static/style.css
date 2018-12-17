@@ -8,9 +8,20 @@
 body {
   padding-top: 54px;
 }
-
+pre {
+  margin:0px !important;
+}
+.indented {
+  padding-left: 30px !important;
+}
 .bloque_grande {
-    padding-top: 54px;
+  padding-top: 54px;
+}
+#form_guia {
+  padding-bottom: 20px;
+}
+#form_guia input[type=submit] {
+  margin-top: 10px;
 }
 @media (min-width: 992px) {
   body {
