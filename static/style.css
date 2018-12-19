@@ -23,6 +23,27 @@ pre {
 #form_guia input[type=submit] {
   margin-top: 10px;
 }
+.output {
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 2px;
+    color: black;
+    padding: 5px;
+    margin: 3px 0px;
+    display: none;
+}
+.error {
+    border-color: rgb(249, 82, 82);
+    background-color: rgba(249, 82, 82, .5);
+}
+.warning {
+    border-color: rgb(252, 217, 75);
+    background-color: rgba(252, 217, 75, .5);
+}
+.exito { /* Leer con la voz del de Open English*/
+    border-color: rgb(57, 239, 121);
+    background-color: rgba(57, 239, 121, .5);
+}
 @media (min-width: 992px) {
   body {
     padding-top: 56px;

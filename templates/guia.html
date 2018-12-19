@@ -11,6 +11,18 @@
         <p class="card-text">
           {{enunciados[i]}}
         </p>
+        <div class="output error">
+            <img src="{{ url_for('static', filename='atomic-bomb.svg') }}"/>
+           <span class="message">El corrector tiró un zarpado</span>
+        </div>
+        <div class="output warning">
+            <img src="{{ url_for('static', filename='flash.svg') }}"/>
+           <span class="message">El corrector tiró un error</span>
+        </div>
+        <div class="output exito">
+            <img src="{{ url_for('static', filename='alien.svg') }}"/>
+           <span class="message">Todo OK</span>
+        </div>
         <pre class="topborder"><code class="python" onclick="$('#ej{{i}}code')[0].focus()">def ejercicio{{i+1}}(pd, datos):</code></pre>
         <pre><code class="python indented editor" contenteditable id="ej{{i}}code">//tu código va acá</code></pre>
         <pre><code class="python indented" onclick="$('#ej{{i}}code')[0].focus()">return datos</code></pre>
@@ -40,13 +52,30 @@
         codigos.push($("#ej"+i+"code")[0].innerText);
         console.log($("#ej"+i+"code")[0].innerText);
       }
+      $(".output").slideUp();
       $.ajax({
         url: "/guia/{{guia_actual}}/entregar",
         type: "POST",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         data: JSON.stringify(codigos),
-        success: console.log,
+        success: function(data) {
+          data = JSON.parse(data);
+          for(i = 0; i < data.length; i++) {
+            if (data[i]["error"].length > 0) {
+                $(".error .message")[i].innerHTML = data[i]["error"];
+                $($(".error")[i]).slideDown();
+            }
+            if (data[i]["warning"].length > 0) {
+                $(".warning .message")[i].innerHTML = data[i]["warning"];
+                $($(".warning")[i]).slideDown();
+            }
+            if (data[i]["info"].length > 0) {
+                $(".exito .message")[i].innerHTML = data[i]["info"];
+                $($(".exito")[i]).slideDown();
+            }
+          }
+        },
         error: console.log
       })
     }
