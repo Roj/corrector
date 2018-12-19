@@ -54,7 +54,7 @@ class Corrector:
                 stderr = subprocess.PIPE)
         outs, errs = worker.communicate(json.dumps(trabajo).encode("utf-8"))
 
-        return self.calcular_diffs(trabajo, json.loads(outs))
+        return json.dumps(self.calcular_diffs(trabajo, json.loads(outs)))
 
     def _son_iguales(self, a, b):
         """Hace una comparación inteligente entre dos valores del mismo tipo"""
@@ -68,34 +68,39 @@ class Corrector:
     def calcular_diff(self, ejercicio, salida):
         """Revisamos que no haya habido errores en la salida del Worker para
         cada ejercicio, y hacemos el diff de los json. El json mapea
-        columnas a listas de valores."""
+        columnas a listas de valores.
+        La respuesta es un dict con keys ("warning", "error", "info") y solo
+        un valor seteado.
+        """
+        respuesta = {"warning": "", "error": "", "info": ""}
         if len(salida["error"]) > 0:
-            return "El corrector devolvió un error: %s".format(
-                salida[j]["error"])
+            respuesta["error"] = "El corrector devolvió un error: {}".format(
+                salida["error"])
+            return respuesta
 
         with open("guias/salidas/" + ejercicio["salida_esperada"]) as f:
             esperado = json.loads(f.read())
         obtenido = json.loads(salida["output"])
-        respuesta = ""
         # Revisamos que las dimensiones sean las esperadas.
         print(obtenido)
         columnas_obtenidas = list(obtenido.keys())
         columnas_esperadas = list(esperado.keys())
         if len(columnas_obtenidas) != len(columnas_esperadas):
-            respuesta = "La salida tiene {} columnas y se esperaban {}. ".format(
+            respuesta["warning"] = "La salida tiene {} columnas y se esperaban {}. ".format(
                 len(columnas_obtenidas), len(columnas_esperadas)
                 )
         if len(obtenido[columnas_obtenidas[0]]) != len(esperado[columnas_esperadas[0]]):
-            respuesta = "La salida tiene {} filas y se esperaban {}.".format(
+            respuesta["warning"] = "La salida tiene {} filas y se esperaban {}.".format(
                 len(obtenido[columnas_obtenidas[0]]), len(esperado[columnas_esperadas[0]]))
 
-        if len(respuesta) > 0:
+        if len(respuesta["warning"]) > 0:
             return respuesta
 
         if obtenido.keys() != esperado.keys():
             # (comparamos .keys() porque es invariante a orden)
-            return "Se esperaban columnas con los nombres: '{}'".format(
+            respuesta["warning"] = "Se esperaban columnas con los nombres: '{}'".format(
                 ",".join(columnas_esperadas))
+            return respuesta
 
         # Las dimensiones están OK, ahora podemos comparar los valores.
         for col, valores_esperados in esperado.items():
@@ -103,16 +108,21 @@ class Corrector:
             for j in range(len(valores_esperados)):
                 esp, obt = valores_esperados[str(j)], valores_obtenidos[str(j)]
                 if type(esp) != type(obt):
-                    return "En la columna {} se vio el tipo {} y se esperaba {}".format(
+                    respuesta["warning"] = "En la columna {} se vio el tipo {} y se esperaba {}".format(
                         col, type(obt).__name__, type(esp).__name__)
+                    return respuesta
                 if not self._son_iguales(obt, esp):
-                    return "En la columna {} se vio el valor {} y se esperaba {}".format(
+                    respuesta["warning"] = "En la columna {} se vio el valor {} y se esperaba {}".format(
                         col, str(obt), str(esp))
-        return "Todo OK!"
+                    return respuesta
+        respuesta["info"] = "Todo OK"
+        return respuesta
 
     def calcular_diffs(self, trabajo, salida):
         """Para cada ejercicio en trabajo, revisamos que la salida sea correcta;
         esto es, que el JSON coincida con la salida esperada."""
         respuestas = [self.calcular_diff(trabajo[j], salida[j])
             for j in range(len(trabajo))]
+        print(respuestas)
+        print(json.dumps(respuestas))
         return respuestas
