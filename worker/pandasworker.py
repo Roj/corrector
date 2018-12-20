@@ -14,7 +14,7 @@ class PandasWorker(Worker):
             codigo = ejercicio["codigo"]
             if not Worker.codigo_es_seguro(codigo):
                 self.resultados.append({
-                    "error": "Código no seguro.",
+                    "error": "Código no seguro o con errores de sintaxis.",
                     "output": ""
                 })
                 continue

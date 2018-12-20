@@ -15,7 +15,10 @@ class Worker(ABC):
         metodos_prohibidos = ["breakpoint", "classmethod", "compile", "dir",
             "compile", "eval", "exec", "locals", "memoryview", "object", "open",
             "super", "__import__"]
-        root = ast.parse(codigo)
+        try:
+            root = ast.parse(codigo)
+        except SyntaxError:
+            return False
         for nodo in ast.walk(root):
             if isinstance(nodo, ast.Import) or isinstance(nodo, ast.ImportFrom):
                 return False
