@@ -3,6 +3,20 @@
 {{guia_actual}}
 {% endblock %}
 {% block content %}
+  <div class="card mt-4">
+    <div class="card-body">
+      <h3 class="card-title">Cómo resolver la guía</h3>
+      <p>El objetivo del corrector es validar los conceptos. La propuesta
+      para resolver estos ejercicios es instalar el ambiente necesario en una
+      máquina, bajarse los datos que da el enunciado e intentar resolverlo
+      en un Jupyter Notebook. Una vez que se tiene un resultado que parece
+      dar bien, pegar el código de los ejercicios y enviarlo para su evaluación.
+      </p>
+      <p><i>Observación</i>: cada ejercicio se entrega como una función,
+      estar atento y guardar en la variable de retorno marcada el resultado
+      del ejercicio.</p>
+    </div>
+  </div>
   <form action="#" id="form_guia" onsubmit="enviarDatos(event)">
     {% for i in range(enunciados|length) %}
     <div class="card mt-4">
