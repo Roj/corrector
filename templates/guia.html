@@ -56,7 +56,7 @@
     $(document).on("focusout", "pre code.editor", function(event){
       editors = $("pre code.editor");
       for(i = 0; i < editors.length; i++) {
-        $(editors[i]).html($(editors[i]).text());
+        $(editors[i]).html(editors[i].innerText);
         hljs.highlightBlock(editors[i]);
       }
     });
