@@ -33,7 +33,7 @@ class PandasWorker(Worker):
                 )
                 continue
             # Preparamos los datos y el código.
-            archivos = ejercicio["archivos_datos"].split(",")
+            archivos = ejercicio["archivos_entrada"].split(",")
             datos = [pd.read_csv("datos/"+ar) for ar in archivos]
             codigo = self.preparar_codigo(codigo, len(archivos))
             # Cargamos el código y lo corremos.
