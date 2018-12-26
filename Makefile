@@ -1,4 +1,4 @@
 build:
 	docker build -f worker/Dockerfile . -t worker
 run:
-	FLASK_DEBUG=1 flask run
+	FLASK_DEBUG=1 flask run --host=0.0.0.0
