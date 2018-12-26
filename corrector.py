@@ -105,8 +105,8 @@ class Corrector:
         # Las dimensiones están OK, ahora podemos comparar los valores.
         for col, valores_esperados in esperado.items():
             valores_obtenidos = obtenido[col]
-            for j in range(len(valores_esperados)):
-                esp, obt = valores_esperados[str(j)], valores_obtenidos[str(j)]
+            for j in valores_obtenidos.keys():
+                esp, obt = valores_esperados[j], valores_obtenidos[j]
                 if type(esp) != type(obt):
                     respuesta["warning"] = "En la columna {} se vio el tipo {} y se esperaba {}".format(
                         col, type(obt).__name__, type(esp).__name__)
@@ -123,6 +123,4 @@ class Corrector:
         esto es, que el JSON coincida con la salida esperada."""
         respuestas = [self.calcular_diff(trabajo[j], salida[j])
             for j in range(len(trabajo))]
-        print(respuestas)
-        print(json.dumps(respuestas))
         return respuestas
