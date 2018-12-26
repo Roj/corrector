@@ -3,11 +3,20 @@ ejercicios:
   -
     enunciado: >-
       Dado un dataframe, devolver el mismo.
-    archivo_entrada: dataframe1.csv
+    archivos_entrada: dataframe1.csv
     salida_esperada: dataframe1.json
   -
     enunciado: >-
       Dado un dataframe, devolver las primeras cinco filas.
-    archivo_entrada: dataframe1.csv
+    archivos_entrada: dataframe1.csv
     salida_esperada: dataframe1_head.json
-
+  -
+    enunciado: >-
+      Haydn perteneció al período clásico de la música, Handel al
+      período barroco. ¿Cuántas horas de música de compositores
+      famosos tenemos para cada período?
+      Dado un dataframe con columnas `compositor, cantidad_horas` y
+      otro dataframe con columnas `compositor, movimiento` devolver
+      un nuevo dataframe con las columnas `movimiento, horas_totales`.
+    archivos_entrada: dataframe1.csv,dataframe1b.csv
+    salida_esperada: dataframe1_joined_b.json

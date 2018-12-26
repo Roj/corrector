@@ -31,13 +31,13 @@ class Corrector:
         return self._obtener_prop_guias(titulo, "enunciado")
 
     def preparar_trabajo(self, codigos, nombre_guia):
-        archivos = self._obtener_prop_guias(nombre_guia, "archivo_entrada")
+        archivos = self._obtener_prop_guias(nombre_guia, "archivos_entrada")
         esperados = self._obtener_prop_guias(nombre_guia, "salida_esperada")
         assert len(codigos) == len(archivos)
         trabajo = []
         for i in range(len(codigos)):
             trabajo.append({
-                "archivo_datos": archivos[i],
+                "archivos_datos": archivos[i],
                 "codigo": codigos[i],
                 "salida_esperada": esperados[i]
             })
@@ -48,7 +48,9 @@ class Corrector:
         El tipo de worker que se corre depende de tipo.
         `trabajo` es una lista de diccionarios con keys entradas
         archivo_entrada y codigo.
-        e.g. [{"archivo_datos": "dataframe1.csv", "codigo": "datos = datos"}]
+        e.g. [{"archivos_datos": "dataframe1.csv", "codigo": "datos = datos"}]
+        archivos_datos puede representar varios archivos si se separan con
+        comas (cuidado con los espacios).
         Devuelve una lista con el resultado (OK, o error) de cada ejercicio.
         """
         self.logger.debug("Enviando a docker: {}".format(json.dumps(trabajo)))
