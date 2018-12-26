@@ -26,8 +26,8 @@ class Corrector:
         return self.guias[titulo]["ejercicios"]
 
     def preparar_trabajo(self, codigos, nombre_guia):
-        archivos = self.guias[nombre_guia]["archivos_entrada"]
-        esperados = self.guias[nombre_guia]["salida_esperada"]
+        archivos = [ej["archivos_entrada"] for ej in self.guias[nombre_guia]["ejercicios"]]
+        esperados = [ej["salida_esperada"] for ej in self.guias[nombre_guia]["ejercicios"]]
         assert len(codigos) == len(archivos)
         trabajo = []
         for i in range(len(codigos)):
