@@ -1,9 +1,12 @@
 from flask import Flask, render_template, request
 from corrector import Corrector
 import json
+import logging
 app = Flask(__name__)
 
 corrector = Corrector()
+if app.debug:
+    corrector.logger.setLevel(logging.DEBUG)
 
 @app.route("/")
 def home():

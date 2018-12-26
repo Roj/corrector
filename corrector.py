@@ -2,11 +2,13 @@ import yaml
 import os
 import json
 import subprocess
+import logging
 
 class Corrector:
     def __init__(self):
         self.cargar_guias()
-
+        self.logger = logging.getLogger()
+        self.logger.addHandler(logging.StreamHandler())
     def cargar_guias(self):
         archivos = os.listdir("guias/")
         self.guias = []
@@ -49,11 +51,13 @@ class Corrector:
         e.g. [{"archivo_datos": "dataframe1.csv", "codigo": "datos = datos"}]
         Devuelve una lista con el resultado (OK, o error) de cada ejercicio.
         """
+        self.logger.debug("Enviando a docker: {}".format(json.dumps(trabajo)))
         worker = subprocess.Popen(["docker", "run", "-i", "worker", tipo.lower()],
                 stdin = subprocess.PIPE, stdout = subprocess.PIPE,
                 stderr = subprocess.PIPE)
         outs, errs = worker.communicate(json.dumps(trabajo).encode("utf-8"))
-
+        self.logger.debug("Docker stdout: {}".format(outs))
+        self.logger.debug("Docker stderr: {}".format(errs))
         return json.dumps(self.calcular_diffs(trabajo, json.loads(outs)))
 
     def _son_iguales(self, a, b):
@@ -82,7 +86,8 @@ class Corrector:
             esperado = json.loads(f.read())
         obtenido = json.loads(salida["output"])
         # Revisamos que las dimensiones sean las esperadas.
-        print(obtenido)
+        self.logger.debug("Obtenido:{}".format(obtenido))
+        self.logger.debug("Esperado:{}".format(esperado))
         columnas_obtenidas = list(obtenido.keys())
         columnas_esperadas = list(esperado.keys())
         if len(columnas_obtenidas) != len(columnas_esperadas):
