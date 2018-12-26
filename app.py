@@ -16,10 +16,22 @@ def home():
 @app.route("/guia/<titulo>")
 def mostrar_guia(titulo):
     assert titulo in corrector.nombres_guias()
+    # Definimos los parámetros de datos para los ejercicios.
+    ejercicios = corrector.ejercicios_de(titulo)
+    params = []
+    for ejercicio in ejercicios:
+        nparams = len(ejercicio["archivos_entrada"].split(","))
+        if nparams == 1:
+            params.append("datos")
+        else:
+            # "datos1, datos2, ..."
+            params.append(", ".join(["datos"+str(i+1) for i in range(nparams)]))
+
     return render_template("guia.html",
         guias = corrector.nombres_guias(),
         guia_actual = titulo,
-        ejercicios = corrector.ejercicios_de(titulo))
+        ejercicios = ejercicios,
+        params = params)
 
 @app.route("/guia/<titulo>/entregar", methods=["POST"])
 def entregar_guia(titulo):

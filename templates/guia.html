@@ -37,7 +37,7 @@
             <img src="{{ url_for('static', filename='alien.svg') }}"/>
            <span class="message">Todo OK</span>
         </div>
-        <pre class="topborder"><code class="python" onclick="$('#ej{{i}}code')[0].focus()">def ejercicio{{i+1}}(pd, datos):</code></pre>
+        <pre class="topborder"><code class="python" onclick="$('#ej{{i}}code')[0].focus()">def ejercicio{{i+1}}(pd, {{params[i]}}):</code></pre>
         <pre><code class="python indented editor" contenteditable id="ej{{i}}code">#tu código va acá</code></pre>
         <pre><code class="python indented" onclick="$('#ej{{i}}code')[0].focus()">return datos</code></pre>
       </div>
