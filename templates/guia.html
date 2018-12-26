@@ -18,12 +18,12 @@
     </div>
   </div>
   <form action="#" id="form_guia" onsubmit="enviarDatos(event)">
-    {% for i in range(enunciados|length) %}
+    {% for i in range(ejercicios|length) %}
     <div class="card mt-4">
       <div class="card-body">
         <h3 class="card-title">Ejercicio {{i+1}}</h3>
         <p class="card-text">
-          {{enunciados[i]}}
+          {{ejercicios[i]["enunciado"]}}
         </p>
         <div class="output error">
             <img src="{{ url_for('static', filename='atomic-bomb.svg') }}"/>

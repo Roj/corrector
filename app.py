@@ -19,7 +19,7 @@ def mostrar_guia(titulo):
     return render_template("guia.html",
         guias = corrector.nombres_guias(),
         guia_actual = titulo,
-        enunciados = corrector.enunciados_de(titulo))
+        ejercicios = corrector.ejercicios_de(titulo))
 
 @app.route("/guia/<titulo>/entregar", methods=["POST"])
 def entregar_guia(titulo):

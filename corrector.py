@@ -11,28 +11,23 @@ class Corrector:
         self.logger.addHandler(logging.StreamHandler())
     def cargar_guias(self):
         archivos = os.listdir("guias/")
-        self.guias = []
+        self.guias = {}
         for archivo in archivos:
             if archivo[-4:] != ".yml":
                 continue
             with open("guias/" + archivo) as f:
                 guia = yaml.load(f)
-                self.guias.append(guia)
+                self.guias[guia["titulo"]] = guia
 
     def nombres_guias(self):
-        return [guia["titulo"] for guia in self.guias]
+        return list(self.guias.keys())
 
-    def _obtener_prop_guias(self, titulo, prop):
-        for guia in self.guias:
-            if guia["titulo"] == titulo:
-                return [ej[prop] for ej in guia["ejercicios"]]
-
-    def enunciados_de(self, titulo):
-        return self._obtener_prop_guias(titulo, "enunciado")
+    def ejercicios_de(self, titulo):
+        return self.guias[titulo]["ejercicios"]
 
     def preparar_trabajo(self, codigos, nombre_guia):
-        archivos = self._obtener_prop_guias(nombre_guia, "archivos_entrada")
-        esperados = self._obtener_prop_guias(nombre_guia, "salida_esperada")
+        archivos = self.guias[nombre_guia]["archivos_entrada"]
+        esperados = self.guias[nombre_guia]["salida_esperada"]
         assert len(codigos) == len(archivos)
         trabajo = []
         for i in range(len(codigos)):
