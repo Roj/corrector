@@ -5,7 +5,7 @@ import socket
 import logging
 from pandasworker import PandasWorker
 
-PORT = 5007
+PORT = 6000
 BUFFER_SIZE = 1024
 class TCPServer:
     def __init__(self):

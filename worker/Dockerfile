@@ -16,4 +16,7 @@ RUN pip3 install --trusted-host pypi.python.org -r requirements.txt
 # Copy the worker directory.
 ADD worker/ /worker
 ADD guias/entradas/ /worker/datos
+
+EXPOSE 6000/tcp
+
 ENTRYPOINT ["/worker/entry.py"]
