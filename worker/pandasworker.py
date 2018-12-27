@@ -34,8 +34,7 @@ class PandasWorker(Worker):
             datos = [pd.read_csv("datos/"+ar) for ar in archivos]
             codigo = self.preparar_codigo(codigo, len(archivos))
             # Cargamos el código y lo corremos.
-            modulo = Worker.cargar_como_modulo(codigo, modulo)
-            re_importar = True
+            modulo = Worker.cargar_como_modulo(codigo)
             try:
                 # Corremos modulo.programa(pd, datos[0], datos[1], ...)
                 output = eval("modulo.programa(pd, {})".format(

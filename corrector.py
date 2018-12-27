@@ -1,8 +1,12 @@
 import yaml
 import os
 import json
-import subprocess
 import logging
+import socket
+
+BUFFER_SIZE = 1024
+WORKER_HOST = "127.0.0.1"
+WORKER_PORT = 6000
 
 class Corrector:
     def __init__(self):
@@ -48,14 +52,26 @@ class Corrector:
         comas (cuidado con los espacios).
         Devuelve una lista con el resultado (OK, o error) de cada ejercicio.
         """
+        trabajo = {"guia": tipo.lower(), "ejercicios": trabajo}
         self.logger.debug("Enviando a docker: {}".format(json.dumps(trabajo)))
-        worker = subprocess.Popen(["docker", "run", "-i", "worker", tipo.lower()],
-                stdin = subprocess.PIPE, stdout = subprocess.PIPE,
-                stderr = subprocess.PIPE)
-        outs, errs = worker.communicate(json.dumps(trabajo).encode("utf-8"))
-        self.logger.debug("Docker stdout: {}".format(outs))
-        self.logger.debug("Docker stderr: {}".format(errs))
-        return json.dumps(self.calcular_diffs(trabajo, json.loads(outs)))
+
+        # Iniciamos un socket estilo HTTP (un solo request, un solo response)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((WORKER_HOST, WORKER_PORT))
+        sock.sendall(json.dumps(trabajo).encode("utf-8"))
+        sock.shutdown(socket.SHUT_WR) # Avisamos que no vamos a escribir más.
+
+        respuesta = b""
+        buffer = sock.recv(BUFFER_SIZE)
+        while len(buffer) > 0:
+            respuesta += buffer
+            buffer = sock.recv(BUFFER_SIZE)
+        respuesta = respuesta.decode("utf-8")
+        sock.close()
+
+        self.logger.debug("Respuesta de docker: {}".format(respuesta))
+        return json.dumps(self.calcular_diffs(trabajo["ejercicios"],
+            json.loads(respuesta)))
 
     def _son_iguales(self, a, b):
         """Hace una comparación inteligente entre dos valores del mismo tipo"""
