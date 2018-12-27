@@ -18,6 +18,11 @@ class TCPServer:
         self.socket.bind((socket.gethostname(), PORT))
         self.socket.listen(10)
 
+        self.cargar_workers()
+
+    def cargar_workers(self):
+        self.pandas_worker = PandasWorker()
+
     def correr(self):
         """Bucle principal del servidor. Acepta conexiones y hace el dispatch
         en el mismo hilo."""
@@ -45,13 +50,24 @@ class TCPServer:
         self.logger.debug("Datos recibidos: {}".format(request))
         # Cargamos el trabajo y lo mandamos a procesar.
         trabajo = json.loads(request)
+        self.logger.debug("Obtenido: {}".format(trabajo))
         respuesta = self.correr_trabajo(trabajo)
         self.logger.debug("Enviando respuesta: {}".format(respuesta))
         #sendall() nos abstrae del loop de envío
         connection.sendall(json.dumps(respuesta).encode("utf-8"))
 
     def correr_trabajo(self, trabajo):
-        return {"error": "", "output": "todo OK!"}
+        """Corre un trabajo. Éste es un diccionario de la forma:
+        {
+          "guia": string,
+          "ejercicios": [{"codigo": string, "archivos_entrada": string}]
+        } """
+        if trabajo["guia"] == "pandas":
+            return self.pandas_worker.correr_trabajo(trabajo["ejercicios"])
+        else:
+            self.logger.debug("Trabajo no esperado: {}".format(trabajo["guia"]))
+
+        return None
 
     def __del__(self):
         self.socket.close()
@@ -60,11 +76,3 @@ if __name__ == "__main__":
     # Preparamos el servidor
     ServerWorker = TCPServer()
     ServerWorker.correr()
-    # Cargamos el json de la entrada estándar.
-    #ejercicios = json.loads(sys.stdin.read())
-
-    #if args.worker_type == "pandas":
-    #    worker = PandasWorker(ejercicios)
-0
-    #worker.correr()
-    #print(json.dumps(worker.respuestas()))

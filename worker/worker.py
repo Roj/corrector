@@ -3,8 +3,6 @@ import ast
 import importlib
 
 class Worker(ABC):
-    def __init__(self, ejercicios):
-        self.ejercicios = ejercicios
 
     @staticmethod
     def codigo_es_seguro(codigo):
@@ -41,9 +39,6 @@ class Worker(ABC):
         return importlib.__import__("ejercicio")
 
     @abstractmethod
-    def correr(self):
+    def correr_trabajo(self, ejercicios):
         return
 
-    @abstractmethod
-    def respuestas(self):
-        return

@@ -2,10 +2,6 @@ from worker import Worker
 import pandas as pd
 
 class PandasWorker(Worker):
-    def __init__(self, ejercicios):
-        super().__init__(ejercicios)
-        self.resultados = []
-
     def preparar_codigo(self, codigo, num_archivos):
         if num_archivos > 1:
             args_archivos = ["datos" + str(i+1)
@@ -23,9 +19,10 @@ class PandasWorker(Worker):
     def agregar_resultado(self, output="", error=""):
         self.resultados.append({"output": output, "error": error})
 
-    def correr(self):
+    def correr_trabajo(self, ejercicios):
+        self.resultados = []
         modulo = None
-        for ejercicio in self.ejercicios:
+        for ejercicio in ejercicios:
             codigo = ejercicio["codigo"]
             if not Worker.codigo_es_seguro(codigo):
                 self.agregar_resultado(
@@ -52,5 +49,4 @@ class PandasWorker(Worker):
                     error = "Error en el código: " + str(e)
                 )
 
-    def respuestas(self):
         return self.resultados
