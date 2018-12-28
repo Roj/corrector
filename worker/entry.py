@@ -49,9 +49,12 @@ class TCPServer:
 
         self.logger.debug("Datos recibidos: {}".format(request))
         # Cargamos el trabajo y lo mandamos a procesar.
-        trabajo = json.loads(request)
-        self.logger.debug("Obtenido: {}".format(trabajo))
-        respuesta = self.correr_trabajo(trabajo)
+        try:
+            trabajo = json.loads(request)
+            self.logger.debug("Obtenido: {}".format(trabajo))
+            respuesta = self.correr_trabajo(trabajo)
+        except:
+            respuesta = {"error": "Request invalido", "output": ""}
         self.logger.debug("Enviando respuesta: {}".format(respuesta))
         #sendall() nos abstrae del loop de envío
         connection.sendall(json.dumps(respuesta).encode("utf-8"))
