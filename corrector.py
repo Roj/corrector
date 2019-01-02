@@ -85,25 +85,12 @@ class Corrector:
         # Esperamos que sea int.
         return a == b
 
-    def calcular_diff(self, ejercicio, salida):
-        """Revisamos que no haya habido errores en la salida del Worker para
-        cada ejercicio, y hacemos el diff de los json. El json mapea
-        columnas a listas de valores.
-        La respuesta es un dict con keys ("warning", "error", "info") y solo
-        un valor seteado.
-        """
+    def _calcular_diff_dict(self, obtenido, esperado):
+        """Hacemos el diff de diccionarios. El diccionario mapea
+        columnas a listas de valores. El formato de respuesta es
+        igual que calcular_diff"""
         respuesta = {"warning": "", "error": "", "info": ""}
-        if len(salida["error"]) > 0:
-            respuesta["error"] = "El corrector devolvió un error: {}".format(
-                salida["error"])
-            return respuesta
-
-        with open("guias/salidas/" + ejercicio["salida_esperada"]) as f:
-            esperado = json.loads(f.read())
-        obtenido = json.loads(salida["output"])
         # Revisamos que las dimensiones sean las esperadas.
-        self.logger.debug("Obtenido:{}".format(obtenido))
-        self.logger.debug("Esperado:{}".format(esperado))
         columnas_obtenidas = list(obtenido.keys())
         columnas_esperadas = list(esperado.keys())
         if len(columnas_obtenidas) != len(columnas_esperadas):
@@ -139,9 +126,84 @@ class Corrector:
         respuesta["info"] = "Todo OK"
         return respuesta
 
+    def _calcular_diff_list(self, obtenido, esperado):
+        """Calculamos el diff entre dos listas.
+        Asumimos que para cada lista, todos sus elementos tienen la misma
+        forma.
+        Devuelve el mismo formato que calcular_diff."""
+        respuesta = {"warning": "", "error": "", "info": ""}
+        if len(obtenido) != len(esperado):
+            respuesta["warning"] = "Se recibieron {} valores y se esperaban {}".format(
+                len(obtenido), len(esperado))
+            return respuesta
+        # Vemos si la lista tiene una estructura compleja
+        if isinstance(esperado[0], list):
+            if not isinstance(obtenido[0], list):
+                respuesta["warning"] = "Los elementos deben ser listas."
+                return respuesta
+            # Hacemos la comparación recursiva.
+            for j in range(len(esperado)):
+                result_comp = self._calcular_diff_list(obtenido[j], esperado[j])
+                if len(result_comp["warning"]) > 0:
+                    respuesta["warning"] = "Dentro de un valor: {}".format(
+                        result_comp["warning"]
+                    )
+                    return respuesta
+        else:
+            #Hacemos la comparación de listas de atómicos.
+            for j in range(len(esperado)):
+                if not self._son_iguales(obtenido[j], esperado[j]):
+                    respuesta["warning"] = "Se observó el valor {} y se esperaba {}".format(
+                        obtenido[j], esperado[j])
+                    return respuesta
+        respuesta["info"] = "Todo OK"
+        return respuesta
+
+    def calcular_diff(self, ejercicio, salida):
+        """Revisamos que no haya habido errores en la salida del Worker para
+        cada ejercicio, y hacemos el diff de los json.
+        Generalmente los ejercicios de pandas devuelven un dict y los
+        de spark una lista, así que primero revisamos los tipos y hacemos
+        un dispatch en base a eso.
+        La respuesta es un dict con keys ("warning", "error", "info") y solo
+        un valor seteado.
+        """
+        respuesta = {"warning": "", "error": "", "info": ""}
+        if len(salida["error"]) > 0:
+            respuesta["error"] = "El corrector devolvió un error: {}".format(
+                salida["error"])
+            return respuesta
+
+        with open("guias/salidas/" + ejercicio["salida_esperada"]) as f:
+            esperado = json.loads(f.read())
+        obtenido = json.loads(salida["output"])
+        self.logger.debug("Obtenido:{}".format(obtenido))
+        self.logger.debug("Esperado:{}".format(esperado))
+
+        # Revisamos los tipos.
+        if isinstance(esperado, dict):
+            if isinstance(obtenido, dict):
+                return self._calcular_diff_dict(obtenido, esperado)
+            # No se obtuvo un dict: generalmente es un error de nuestro
+            # lado.
+            error_msg = "Se esperaba un diccionario y se obtuvo {}.".format(
+                type(obtenido).__name__)
+            self.logger.error(error_msg)
+            respuesta["error"] = error_msg
+        elif isinstance(esperado, list):
+            if isinstance(obtenido, list):
+                return self._calcular_diff_list(obtenido, esperado)
+            # No se obtuvo una lista: como antes, puede ser de nuestro lado
+            # el error.
+            error_msg = "Se esperaba una lista y se obtuvo {}.".format(
+                type(obtenido).__name__)
+            self.logger.error(error_msg)
+            respuesta["error"] = error_msg
+
     def calcular_diffs(self, trabajo, salida):
         """Para cada ejercicio en trabajo, revisamos que la salida sea correcta;
         esto es, que el JSON coincida con la salida esperada."""
         respuestas = [self.calcular_diff(trabajo[j], salida[j])
             for j in range(len(trabajo))]
         return respuestas
+
