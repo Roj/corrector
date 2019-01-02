@@ -29,6 +29,9 @@ class Corrector:
     def ejercicios_de(self, titulo):
         return self.guias[titulo]["ejercicios"]
 
+    def nombre_parametro_de(self, titulo):
+        return self.guias[titulo]["nombre_parametro"]
+
     def preparar_trabajo(self, codigos, nombre_guia):
         archivos = [ej["archivos_entrada"] for ej in self.guias[nombre_guia]["ejercicios"]]
         esperados = [ej["salida_esperada"] for ej in self.guias[nombre_guia]["ejercicios"]]

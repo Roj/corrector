@@ -31,7 +31,8 @@ def mostrar_guia(titulo):
         guias = corrector.nombres_guias(),
         guia_actual = titulo,
         ejercicios = ejercicios,
-        params = params)
+        params = params,
+        nombre_param = corrector.nombre_parametro_de(titulo))
 
 @app.route("/guia/<titulo>/entregar", methods=["POST"])
 def entregar_guia(titulo):

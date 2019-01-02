@@ -1,4 +1,5 @@
 titulo: Spark
+nombre_parametro: context
 ejercicios:
   -
     enunciado: >-
