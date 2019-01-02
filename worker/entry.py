@@ -4,6 +4,7 @@ import json
 import socket
 import logging
 from pandasworker import PandasWorker
+from sparkworker import SparkWorker
 
 PORT = 6000
 BUFFER_SIZE = 1024
@@ -22,6 +23,7 @@ class TCPServer:
 
     def cargar_workers(self):
         self.pandas_worker = PandasWorker()
+        self.spark_worker = SparkWorker()
 
     def correr(self):
         """Bucle principal del servidor. Acepta conexiones y hace el dispatch
@@ -53,8 +55,8 @@ class TCPServer:
             trabajo = json.loads(request)
             self.logger.debug("Obtenido: {}".format(trabajo))
             respuesta = self.correr_trabajo(trabajo)
-        except:
-            respuesta = {"error": "Request invalido", "output": ""}
+        except Exception as e:
+            respuesta = {"error": "Request invalido: {}".format(str(e)), "output": ""}
         self.logger.debug("Enviando respuesta: {}".format(respuesta))
         #sendall() nos abstrae del loop de envío
         connection.sendall(json.dumps(respuesta).encode("utf-8"))
@@ -67,6 +69,8 @@ class TCPServer:
         } """
         if trabajo["guia"] == "pandas":
             return self.pandas_worker.correr_trabajo(trabajo["ejercicios"])
+        elif trabajo["guia"] == "spark":
+            return self.spark_worker.correr_trabajo(trabajo["ejercicios"])
         else:
             self.logger.debug("Trabajo no esperado: {}".format(trabajo["guia"]))
 
