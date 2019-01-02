@@ -2,13 +2,16 @@ titulo: Spark
 ejercicios:
   -
     enunciado: >-
-      Dado un RDD de tres columnas elegir la fila que tiene mayor suma.
-      La salida deberá ser la suma máxima.
-    salida_esperada: archivo.json
+      Tenemos un RDD de los métodos de comunicación entre procesos en
+      sistemas UNIX. Cada elemento del RDD tiene formato [indice, metodo].
+      Devolver una lista con los métodos.
+    archivos_entrada: ipcs.json
+    salida_esperada: ipcs_nombres.json
   -
     enunciado: >-
       Dado un RDD de cuatro columnas elegir la fila que tiene mayor suma.
       La salida deberá ser la suma máxima.
-    salida_esperada: archivo2.json
+    archivos_entrada: ipcs.json
+    salida_esperada: ipcs_nombres.json
 
 
