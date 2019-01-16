@@ -31,7 +31,7 @@ class PandasWorker(Worker):
                 continue
             # Preparamos los datos y el código.
             archivos = ejercicio["archivos_entrada"].split(",")
-            datos = [pd.read_csv("datos/"+ar) for ar in archivos]
+            datos = [pd.read_csv("datos/"+ar, sep=None) for ar in archivos]
             codigo = self.preparar_codigo(codigo, len(archivos))
             # Cargamos el código y lo corremos.
             modulo = Worker.cargar_como_modulo(codigo)

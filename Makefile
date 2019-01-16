@@ -1,4 +1,5 @@
 build:
+	./download_data.py
 	docker build -f worker/Dockerfile . -t worker
 run:
 	docker run -p 127.0.0.1:6000:6000 -d worker
