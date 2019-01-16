@@ -23,12 +23,14 @@ ejercicios:
     salida_esperada: dataframe1_joined_b.json
   -
     enunciado: >-
-      Conseguimos el set de datos de calidad de aire de 2017 
-      (<a href="https://data.buenosaires.gob.ar/dataset/calidad-de-aire">link</a>)
+      Conseguimos el set de datos de calidad de aire de 2017
+      ([descargar](https://data.buenosaires.gob.ar/dataset/calidad-de-aire"))
       en Buenos Aires y queremos saber a cuáles horas hay mayor polución. Para
       esto, calcular la media de cada tipo de agente por hora, sumar la cantidad
-      de cada agente y devolver un dataframe <i>ordenado</i> donde el índice
-      es la hora y la columna es la suma de la media de los agentes.<br/>
-      Atención: los valores inválidos reemplazarlos por 0.
+      de cada agente y devolver un dataframe *ordenado* descendentemente 
+      donde el índice es la hora y la columna es la suma de la media de los
+      agentes.   
+
+      Atención --  los valores inválidos reemplazarlos por 0.
     archivos_entrada: calidad-de-aire-2017.csv
     salida_esperada: calidad_aire_polucion_horas.json

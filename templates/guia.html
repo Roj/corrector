@@ -23,7 +23,7 @@
       <div class="card-body">
         <h3 class="card-title">Ejercicio {{i+1}}</h3>
         <p class="card-text">
-          {{ejercicios[i]["enunciado"]}}
+          {{ejercicios[i]["enunciado"]|safe}}
         </p>
         <div class="output error">
             <img src="{{ url_for('static', filename='atomic-bomb.svg') }}"/>

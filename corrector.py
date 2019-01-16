@@ -3,6 +3,7 @@ import os
 import json
 import logging
 import socket
+import markdown
 
 BUFFER_SIZE = 1024
 WORKER_HOST = "127.0.0.1"
@@ -21,6 +22,11 @@ class Corrector:
                 continue
             with open("guias/" + archivo) as f:
                 guia = yaml.load(f)
+                for i in range(len(guia["ejercicios"])):
+                    # compilamos el markdown a html
+                    guia["ejercicios"][i]["enunciado"] = markdown.markdown(
+                        guia["ejercicios"][i]["enunciado"]
+                    )
                 self.guias[guia["titulo"]] = guia
 
     def nombres_guias(self):
