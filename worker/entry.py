@@ -52,7 +52,7 @@ class TCPServer:
         self.logger.debug("Datos recibidos: {}".format(request))
         # Cargamos el trabajo y lo mandamos a procesar.
         try:
-            trabajo = json.loads(request)
+            trabajo = json.loads(request.decode())
             self.logger.debug("Obtenido: {}".format(trabajo))
             respuesta = self.correr_trabajo(trabajo)
         except Exception as e:

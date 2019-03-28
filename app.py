@@ -43,3 +43,6 @@ def entregar_guia(titulo):
     trabajo = corrector.preparar_trabajo(codigos, titulo)
 
     return json.dumps(corrector.correr_trabajo(trabajo, titulo)), 200
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0",port=8000, debug=True)

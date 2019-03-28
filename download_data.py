@@ -4,12 +4,22 @@ import os
 
 archivos = os.listdir("guias/entradas")
 
-if "calidad-de-aire-2017.csv" not in archivos:
-    print("Descargamos el dataset de calidad de aire...")
-    call([
-        "wget",
-        "https://data.buenosaires.gob.ar/api/files/calidad-de-aire-2017.csv/download/csv",
-        "-O",
-        "guias/entradas/calidad-de-aire-2017.csv"])
-else:
-    print("Ya tenemos el dataset de calidad de aire, salteamos...")
+def bajar_si_no_existe(archivo, url):
+    if archivo not in archivos:
+        print("Descargamos el dataset {}...".format(url))
+        call([
+            "wget",
+            url,
+            "-O",
+            "guias/entradas/" + archivo])
+    else:
+        print("Ya tenemos el dataset {}, salteamos...".format(archivo))
+
+bajar_si_no_existe("calidad-de-aire-2017.csv", 
+            "http://cdn.buenosaires.gob.ar/datosabiertos/datasets/calidad-de-aire/calidad-de-aire-2017.csv")
+
+bajar_si_no_existe("departamentos-en-venta-2013.csv",
+            "http://cdn.buenosaires.gob.ar/datosabiertos/datasets/departamentos-en-venta/departamentos-en-venta-2013.csv")
+
+bajar_si_no_existe("departamentos-en-venta-2016.csv", 
+            "http://cdn.buenosaires.gob.ar/datosabiertos/datasets/departamentos-en-venta/departamentos-en-venta-2016.csv")

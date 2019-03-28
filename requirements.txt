@@ -1,0 +1,4 @@
+Flask>=1.0.2
+Markdown>=3.0.1
+PyYAML>=3.13
+requests>=2.12.4

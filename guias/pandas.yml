@@ -3,11 +3,6 @@ nombre_parametro: pd
 ejercicios:
   -
     enunciado: >-
-      Dado un dataframe, devolver el mismo.
-    archivos_entrada: dataframe1.csv
-    salida_esperada: dataframe1.json
-  -
-    enunciado: >-
       Dado un dataframe, devolver las primeras cinco filas.
     archivos_entrada: dataframe1.csv
     salida_esperada: dataframe1_head.json
@@ -24,7 +19,7 @@ ejercicios:
   -
     enunciado: >-
       Conseguimos el set de datos de calidad de aire de 2017
-      ([descargar](https://data.buenosaires.gob.ar/dataset/calidad-de-aire"))
+      ([descargar](https://data.buenosaires.gob.ar/dataset/calidad-aire))
       en Buenos Aires y queremos saber a cuáles horas hay mayor polución. Para
       esto, calcular la media de cada tipo de agente por hora, sumar la cantidad
       de cada agente y devolver un dataframe *ordenado* descendentemente 
@@ -34,3 +29,29 @@ ejercicios:
       Atención --  los valores inválidos reemplazarlos por 0.
     archivos_entrada: calidad-de-aire-2017.csv
     salida_esperada: calidad_aire_polucion_horas.json
+  -
+    enunciado: >-
+      Usando los mismos datos de calidad de aire, ahora queremos conocer
+      cuáles son los peores meses para ir al Parque Centenario,
+      en sentido de concentración de monóxido de carbono (CO) en
+      esa subestación.
+      Devolver un dataframe con una única columna "mes", ordenada
+      cronológicamente, con los meses que superan al promedio 
+      de contaminación. (Poner mayúscula en la primera letra de cada mes.)
+    archivos_entrada: calidad-de-aire-2017.csv
+    salida_esperada: calidad_aire_polucion_meses.json
+  -
+    enunciado: >-
+      Utilizando los datos de Departamentos en Venta en 2013 y 2016 en
+      la capital federal, queremos analizar la variación de precio 
+      de los inmuebles en los barrios.  
+
+      ¿Qué barrios aumentaron su precio de venta de inmueble promedio,
+      para departamentos menores a cinco ambientes, más de un treinta
+      por ciento entre 2013 y 2016? Usar el número en dólares.   
+
+      Devolver un dataframe con una columna única "BARRIO"   
+
+      [Link a los archivos](https://data.buenosaires.gob.ar/dataset/departamentos-venta)
+    archivos_entrada: departamentos-en-venta-2013.csv,departamentos-en-venta-2016.csv
+    salida_esperada: barrios_mas_caros_2013_2016.json

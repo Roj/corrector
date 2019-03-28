@@ -6,7 +6,7 @@ import socket
 import markdown
 
 BUFFER_SIZE = 1024
-WORKER_HOST = "127.0.0.1"
+WORKER_HOST = socket.gethostname()
 WORKER_PORT = 6000
 
 class Corrector:
