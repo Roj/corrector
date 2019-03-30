@@ -14,5 +14,12 @@ ejercicios:
       La salida deberá ser la suma máxima.
     archivos_entrada: ipcs.json
     salida_esperada: ipcs_nombres.json
-
+  -
+    enunciado: >-
+      La empresa Instagram almacena información de usuarios en un RDD de la forma (id_usuario, nickname, país, fecha_alta).
+      En otro RDD, almacena información de las publicaciones como (id_publicacion, id_usuario, id_foto, comentario, fecha). 
+      En Instagram, un hashtag es una palabra que comienza con '#'. 
+      Considerando atípicamente que cada palabra se separa únicamente por espacios en blanco, se pide encontrar el top 10 de hashtags que más aparecen y que fueron publicados únicamente por usuarios del país Argentina.
+    archivos_entrada: ipcs.json
+    salida_esperada: ipcs_nombres.json
 
