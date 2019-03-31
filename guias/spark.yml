@@ -14,5 +14,16 @@ ejercicios:
       La salida deberá ser la suma máxima.
     archivos_entrada: ipcs.json
     salida_esperada: ipcs_nombres.json
+  -
+    enunciado: >- 
+      Teniendo en cuenta el set de datos del Google Play Store en el link
+      ([descargar](https://www.kaggle.com/lava18/google-play-store-apps/version/6#googleplaystore.csv)),
+      se pide listar el nombre del top 5 de aplicaciones con más reviews de la categoría AUTO_AND_VEHICLES que a su vez
+      contienen mayor cantidad de reviews positivos que negativos (no hay que tener en cuenta los reviews neutrales o Nan). 
 
+      Atención --  Tener especial cuidando que el CSV se parse correctamente pues los reviews contienen textos con ",".
+      Se sugiere utilizar la siguiente instrucción para abrir los csv
+      sqlContext.read.format('com.databricks.spark.csv').options(header='true', inferschema='true', quote='"', delimiter=',', escape='"').load(filename.csv)       
+    archivos_entrada: google-play-store-apps.zip
+    salida_esperada: google-play-store-apps-top5.json
 
