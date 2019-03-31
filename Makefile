@@ -16,7 +16,7 @@ nodocker_run:
 	chmod 777 worker
 	touch worker/ejercicio.py
 	chmod 646 worker/ejercicio.py
-	cd worker/ && sudo -u nobody python3 entry.py 2>&1 | tee /tmp/worker.log >/dev/null &
+	cd worker/ && sudo -u nobody PYSPARK_PYTHON=`which python3` python3 entry.py 2>&1 | tee /tmp/worker.log >/dev/null &
 	flask run --host 0.0.0.0 2>&1 | tee /tmp/server.log >/dev/null &
 test:
 	echo abc>pepe.txt
